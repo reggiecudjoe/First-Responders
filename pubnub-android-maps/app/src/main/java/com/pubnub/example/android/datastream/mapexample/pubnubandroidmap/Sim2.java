@@ -124,7 +124,9 @@ public class Sim2 extends AppCompatActivity implements OnMapReadyCallback {
                 if (Sim2.this.mMarker != null) {
                     Sim2.this.mMarker.setPosition(location);
                 } else {
-                    Sim2.this.mMarker = mMap.addMarker(new MarkerOptions().position(location));
+                    Sim2.this.mMarker = mMap.addMarker(new MarkerOptions()
+                            .position(location)
+                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_car)));
                 }
 
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
