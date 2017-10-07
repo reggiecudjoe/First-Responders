@@ -129,7 +129,6 @@ public class Sim2 extends AppCompatActivity implements OnMapReadyCallback {
                             .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_car)));
                 }
 
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
             }
         });
     }
