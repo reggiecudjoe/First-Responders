@@ -1,6 +1,6 @@
 pn = require('pubnub');
 var truckLat = 38.897327;
-var truckLng = -77.011432;
+var truckLng = -77.012732;
 var lat = 38.896660;
 var lng = -77.009087;
 var watson = false;
@@ -11,7 +11,7 @@ p = new pn({
   subscribeKey: "sub-c-76162f2a-ab2b-11e7-b4e4-2675c721e615"
 });
 var x = setInterval(function() {
-  if (step < 11){
+  if (step < 16){
   	truckLng = truckLng + 0.0002;
   } else {
   	truckLat = truckLat + 0.0002;
@@ -47,4 +47,4 @@ var x = setInterval(function() {
   }
     return console.log(arguments);
   });
-}, 500);
+}, 700);
