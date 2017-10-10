@@ -7,10 +7,12 @@ package com.pubnub.example.android.datastream.mapexample.pubnubandroidmap;
 import com.google.android.gms.maps.model.Marker;
 import com.pubnub.api.callbacks.SubscribeCallback;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -35,6 +37,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
+
 public class Sim1 extends AppCompatActivity implements OnMapReadyCallback {
     public static final String TAG = Sim1.class.getName();
 
@@ -52,8 +56,7 @@ public class Sim1 extends AppCompatActivity implements OnMapReadyCallback {
     private SharedPreferences mSharedPrefs;
 
     private Marker mMarker;
-    private Marker truckMarker;
-    private Polyline mPolyline;
+    private Marker wat;
 
     private List<LatLng> mPoints = new ArrayList<>();
 
@@ -76,7 +79,7 @@ public class Sim1 extends AppCompatActivity implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setMinZoomPreference(17.0f);
-        LatLng focus = new LatLng(38.896660,-77.009087);
+        LatLng focus = new LatLng(38.896520,-77.009087);
          mMap.moveCamera(CameraUpdateFactory.newLatLng(focus));
     }
 
@@ -103,11 +106,14 @@ public class Sim1 extends AppCompatActivity implements OnMapReadyCallback {
                     Map<String, String> map = JsonUtil.convert(message.getMessage(), LinkedHashMap.class);
                     String lat = map.get("lat");
                     String lng = map.get("lng");
-                    String truckLat = map.get("truckLat");
-                    String truckLng = map.get("truckLng");
+                    String watson = map.get("watson");
+                    updateLocation(new LatLng(Double.parseDouble(lat), Double.parseDouble(lng)), Double.parseDouble(watson));
 
-                    updateLocation(new LatLng(Double.parseDouble(lat), Double.parseDouble(lng)));
-                    updateTruck(new LatLng(Double.parseDouble(truckLat), Double.parseDouble(truckLng)));
+//                    if (Double.parseDouble(watson) == 999){
+//                        Sim1.this.wat = mMap.addMarker(new MarkerOptions()
+//                                .position(new LatLng(Double.parseDouble(lat), Double.parseDouble(lng)))
+//                                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_alert)));
+//                    }
 
                 } catch (Exception e) {
                     throw Throwables.propagate(e);
@@ -124,12 +130,17 @@ public class Sim1 extends AppCompatActivity implements OnMapReadyCallback {
         this.mPubNub.subscribe().channels(Arrays.asList(CHANNEL_NAME)).execute();
     }
 
-    private void updateLocation(final LatLng location) {
+    private void updateLocation(final LatLng location, final double watty) {
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 mPoints.add(location);
 
+                    if (watty == 999){
+                        Sim1.this.wat = mMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(38.896520+.00050, -77.009087))
+                                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_alert)));
+                    }
                 if (Sim1.this.mMarker != null) {
                     Sim1.this.mMarker.setPosition(location);
                 } else {
@@ -143,23 +154,5 @@ public class Sim1 extends AppCompatActivity implements OnMapReadyCallback {
         });
     }
 
-    private void updateTruck(final LatLng location) {
-        this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mPoints.add(location);
 
-                if (Sim1.this.truckMarker != null) {
-                    Sim1.this.truckMarker.setPosition(location);
-                } else {
-                    Sim1.this.truckMarker = mMap.addMarker(new MarkerOptions()
-                            .position(location)
-                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_truck)));
-                }
-//                mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
-
-
-            }
-        });
-    }
 }

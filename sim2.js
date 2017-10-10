@@ -1,6 +1,6 @@
 pn = require('pubnub');
-var truckLat = 38.897327;
-var truckLng = -77.011232;
+var truckLat = 38.897277;
+var truckLng = -77.011882;
 var lat = 38.896660;
 var lng = -77.009087;
 var watson = false;
@@ -11,7 +11,7 @@ p = new pn({
   subscribeKey: "sub-c-76162f2a-ab2b-11e7-b4e4-2675c721e615"
 });
 var x = setInterval(function() {
-  if (step < 11){
+  if (step < 14){
   	truckLng = truckLng + 0.0002;
   } else {
   	truckLat = truckLat + 0.0002;
@@ -20,7 +20,7 @@ var x = setInterval(function() {
   if (step < 6){
   	lat = lat + 0.00005;
   }
-  if (step > 13){
+  if (step > 15){
   	lat = lat + 0.0001;
   }
   // truckLat = truckLat + .00005;
@@ -40,8 +40,8 @@ var x = setInterval(function() {
   if (step == 21){
   	// clearInterval(x);
   	step = 0;
-  	truckLng = -77.011232;
-  	truckLat = 38.897327;
+  	truckLat = 38.897277;
+    truckLng = -77.011882;
   	lat = 38.896666;
 
   }
